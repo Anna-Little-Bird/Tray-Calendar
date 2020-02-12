@@ -3,17 +3,24 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class TrayCalendar
-implements ActionListener
+//implements ActionListener
 {
 	public static void main(String[] args) {
+//		Number j;
+//		Integer k;
+		int i;
+		String day;
 		JFrame frame = new JFrame("Calendar");
 		//frame.add(new HelloComponent("Hello, Java!"));
-		///for 
-		frame.add(new JButton("1"));
-		frame.add(new JButton("2"));
-		frame.setLayout(new FlowLayout());
+		for (i=1; i<32; i++) {
+			day=Integer.toString(i);
+			frame.add(new JButton(day));
+		}
+//		frame.add(new JButton("1"));
+//		frame.add(new JButton("2"));
+		frame.setLayout(new GridLayout(0,7));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 300);
+		frame.setSize(350, 350);
 		frame.setVisible(true);
 	}
 }
