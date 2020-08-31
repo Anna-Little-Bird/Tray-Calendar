@@ -2,27 +2,62 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Calendar;
 
 public class TrayCalendar
-{
+{	
 	public static void main(String[] args)	// main method
 	{
-		JFrame frame = new JFrame("Calendar");	// creating Calendar's main window
+		JFrame frame = new JFrame("Tray Calendar");	// creating Calendar's main window
+		MainWindow mainwindow=new MainWindow();
+		frame.add(mainwindow);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// setting the CLOSE button to close the program
-		frame.setSize(200, 200);				// window size
-		JButton Button1=new JButton("1");		// adding the Button
-		frame.add(Button1);
-		frame.setLayout(new FlowLayout());		// might change to GridLayout?
+		frame.setSize(350, 350);					// window size
 		frame.setVisible(true);
+	}
+}
+
+class MainWindow extends JComponent implements ActionListener
+{
+	int i,days;
+	JButton [] buttons;
 		
-		Button1.addActionListener(new ActionListener()		// adding some interaction to the Button 
+	public MainWindow()
+	{
+		int month;
+		Calendar now=Calendar.getInstance();		// getting the number of days of this month
+		month=now.get(Calendar.MONTH);
+		switch (month)
 		{
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource()== Button1) {				// when the Button is clicked
-					frame.add(new DayTask());				// open a new window
-				}	
-			}		
-		});
+			case 0: case 2: case 4: case 6: case 7: case 9: case 11: 
+				days=31;
+				break;
+			case 3: case 5: case 8: case 10:
+				days=30;
+				break;
+			case 1:
+				days=28;		// LEAP YEAR!!!
+				break;
+		}
+		setLayout(new GridLayout(0,7));			// setting the layout
+		buttons=new JButton[days];				// initializing array 
+		for (int i=0;i<days;i++)
+		{
+			buttons[i]=new JButton(Integer.toString(i+1));
+			add(buttons[i]);					// adding buttons to the frame
+			buttons[i].addActionListener(this);	// adding ActionListener
+		}
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+		for (i=0;i<days;i++)
+		{
+			if (e.getSource()== buttons[i])					// when the Button is clicked
+			{				
+				add(new DayTask(Integer.toString(i+1)));	// open a new window
+			}
+		}
 	}
 }
 
@@ -35,9 +70,10 @@ class DayTask extends JComponent
 	JButton save,clear;
 
 	
-	public DayTask()
+	public DayTask(String number)
 	{							// playing with the window appearance
-		task=new JFrame("1");
+	
+		task=new JFrame(number);
 		task.setSize(350, 250);
 		task.setLayout(null);
 		task.setVisible(true);
